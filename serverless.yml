@@ -1,0 +1,48 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: swagger-doc # NOTE: update this with your service name
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  region: us-west-2
+  iamManagedPolicies:
+    - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
+
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+functions:
+  swagger_export:
+    handler: swagger.export
+    events:
+      - http:
+          path: apis/{restApiId}/{stage}
+          method: get
+  swagger_ui:
+    handler: swagger_ui.export
+    events:
+      - http:
+          path: uis
+          method: get
+          cors: true
+
+
+
